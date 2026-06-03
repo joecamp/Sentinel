@@ -1,0 +1,153 @@
+<Window x:Class="Sentinel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sentinel"
+        mc:Ignorable="d"
+        Title="Sentinel " Height="600" Width="900"
+        Background="#F0F2F5">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#1A2433" Padding="20,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,30,0">
+                    <TextBlock Text="SENTINEL " FontSize="20" FontWeight="Bold" Foreground="White" />
+                    <TextBlock Text="Live aircraft positions" FontSize="11" Foreground="#8A9BB0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                            VerticalAlignment="Center" HorizontalAlignment="Right">
+
+                    <StackPanel Margin="0,0,12,0">
+                        <TextBlock Text="LATITUDE" FontSize="10" FontWeight="SemiBold"
+                                   Foreground="#8A9BB0" Margin="0,0,0,4" />
+                        <TextBox Width="90" Height="32"
+                                 Text="{Binding Latitude, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="#263347" Foreground="White"
+                                 CaretBrush="White" SelectionBrush="#2563EB"
+                                 BorderBrush="#3D5066" BorderThickness="1"
+                                 Padding="8,0" VerticalContentAlignment="Center" FontSize="13" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,12,0">
+                        <TextBlock Text="LONGITUDE" FontSize="10" FontWeight="SemiBold"
+                                   Foreground="#8A9BB0" Margin="0,0,0,4" />
+                        <TextBox Width="90" Height="32"
+                                 Text="{Binding Longitude, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="#263347" Foreground="White"
+                                 CaretBrush="White" SelectionBrush="#2563EB"
+                                 BorderBrush="#3D5066" BorderThickness="1"
+                                 Padding="8,0" VerticalContentAlignment="Center" FontSize="13" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,20,0">
+                        <TextBlock Text="RADIUS (km)" FontSize="10" FontWeight="SemiBold"
+                                   Foreground="#8A9BB0" Margin="0,0,0,4" />
+                        <TextBox Width="80" Height="32"
+                                 Text="{Binding Radius, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="#263347" Foreground="White"
+                                 CaretBrush="White" SelectionBrush="#2563EB"
+                                 BorderBrush="#3D5066" BorderThickness="1"
+                                 Padding="8,0" VerticalContentAlignment="Center" FontSize="13" />
+                    </StackPanel>
+
+                    <Button Height="32" Padding="18,0"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding UpdateAircraftCommand}"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#2563EB" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="FontSize" Value="13" />
+                                <Setter Property="FontWeight" Value="SemiBold" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="4"
+                                                    Padding="{TemplateBinding Padding}"
+                                                    Height="{TemplateBinding Height}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#1D4ED8" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#1E40AF" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#3D5066" />
+                                                    <Setter Property="Foreground" Value="#8A9BB0" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock Text="Update Aircraft" />
+                    </Button>
+
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Aircraft table -->
+        <DataGrid Grid.Row="1" Margin="20"
+                  ItemsSource="{Binding AircraftStates}"
+                  SelectedItem="{Binding SelectedAircraftState}"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                  Background="White" BorderBrush="#E2E8F0" BorderThickness="1"
+                  RowBackground="White" AlternatingRowBackground="#F8FAFC"
+                  HorizontalGridLinesBrush="#E2E8F0"
+                  SelectionMode="Single">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#F1F5F9" />
+                    <Setter Property="Foreground" Value="#64748B" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Padding" Value="12,8" />
+                    <Setter Property="BorderBrush" Value="#E2E8F0" />
+                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="12,6" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="FontSize" Value="13" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#DBEAFE" />
+                            <Setter Property="Foreground" Value="#1E3A5F" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Callsign" Width="*" Binding="{Binding Callsign}" />
+                <DataGridTextColumn Header="Origin"   Width="*" Binding="{Binding OriginCountry}" />
+                <DataGridTextColumn Header="Position" Width="*" Binding="{Binding LatLongDisplay}" />
+                <DataGridTextColumn Header="Speed"    Width="*" Binding="{Binding SpeedDisplay}" SortMemberPath="VelocityKnots" />
+                <DataGridTextColumn Header="Altitude" Width="*" Binding="{Binding AltitudeDisplay}" SortMemberPath="BaroAltitudeFeet" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
