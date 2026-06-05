@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -21,6 +22,12 @@ public partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel()
     {
         _ = LoadAsync();
+    }
+
+    [RelayCommand]
+    private void LogSelectedCallsign()
+    {
+        Debug.WriteLine($"DoubleClick: {SelectedAircraftState?.Callsign ?? "null"}");
     }
 
     [RelayCommand]

@@ -115,32 +115,13 @@
                   HeadersVisibility="Column" GridLinesVisibility="Horizontal"
                   Background="White" BorderBrush="#E2E8F0" BorderThickness="1"
                   RowBackground="White" AlternatingRowBackground="#F8FAFC"
-                  HorizontalGridLinesBrush="#E2E8F0"
-                  SelectionMode="Single">
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="#F1F5F9" />
-                    <Setter Property="Foreground" Value="#64748B" />
-                    <Setter Property="FontWeight" Value="SemiBold" />
-                    <Setter Property="FontSize" Value="12" />
-                    <Setter Property="Padding" Value="12,8" />
-                    <Setter Property="BorderBrush" Value="#E2E8F0" />
-                    <Setter Property="BorderThickness" Value="0,0,0,1" />
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Padding" Value="12,6" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="FontSize" Value="13" />
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#DBEAFE" />
-                            <Setter Property="Foreground" Value="#1E3A5F" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
+                  HorizontalGridLinesBrush="#E2E8F0">
+            
+            <DataGrid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" 
+                              Command="{Binding LogSelectedCallsignCommand}" />
+            </DataGrid.InputBindings>
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Callsign" Width="*" Binding="{Binding Callsign}" />
                 <DataGridTextColumn Header="Origin"   Width="*" Binding="{Binding OriginCountry}" />
