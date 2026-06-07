@@ -12,8 +12,7 @@ public class AircraftState
     public DateTimeOffset? LastPositionTime { get; init; }
     public DateTimeOffset LastContact { get; init; }
 
-    public double? Longitude { get; init; }
-    public double? Latitude { get; init; }
+    public GeoCoords? Position { get; init; }
 
     /// <summary>Barometric altitude in feet. Null if not available.</summary>
     public double? BaroAltitudeFeet { get; init; }
@@ -40,8 +39,8 @@ public class AircraftState
     public string CategoryString => CategoryIntToString();
 
     // Derived display helpers — good for data binding later
-    public string LatLongDisplay => Latitude.HasValue && Longitude.HasValue
-        ? $"({Latitude.Value:N2},{Longitude.Value:N2})"
+    public string LatLongDisplay => Position is { } p
+        ? $"({p.Latitude:N2}, {p.Longitude:N2})"
         : "N/A";
 
     public string AltitudeDisplay => BaroAltitudeFeet.HasValue

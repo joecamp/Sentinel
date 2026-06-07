@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 using Sentinel.Core.Models;
 using Sentinel.Core.Services;
@@ -28,6 +29,11 @@ public partial class MainWindowViewModel : ObservableObject
     private void LogSelectedCallsign()
     {
         Debug.WriteLine($"DoubleClick: {SelectedAircraftState?.Callsign ?? "null"}");
+
+        if (SelectedAircraftState?.Position is not { } position)
+            return;
+
+        WeakReferenceMessenger.Default.Send(new CenterOnCoordsMessage(position.Latitude, position.Longitude));
     }
 
     [RelayCommand]
@@ -52,5 +58,10 @@ public partial class MainWindowViewModel : ObservableObject
 
         foreach (var state in states)
             AircraftStates.Add(state);
+
+        var coords = AircraftStates.Select(s => s.Position).OfType<GeoCoords>().ToList();
+        WeakReferenceMessenger.Default.Send(new FetchAircraftMessage(coords));
+
+        WeakReferenceMessenger.Default.Send(new CenterMapMessage(Latitude, Longitude, Radius));
     }
 }

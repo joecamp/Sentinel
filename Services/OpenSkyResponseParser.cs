@@ -52,6 +52,12 @@ public static class OpenSkyResponseParser
 
     private static AircraftState ParseStateVector(JsonElement[] e)
     {
+        double? longitude = GetDouble(e[5]);
+        double? latitude  = GetDouble(e[6]);
+        GeoCoords? coords = latitude.HasValue && longitude.HasValue
+            ? new GeoCoords(latitude.Value, longitude.Value)
+            : null;
+
         return new AircraftState
         {
             Icao24 = GetString(e[0]) ?? string.Empty,
@@ -59,8 +65,7 @@ public static class OpenSkyResponseParser
             OriginCountry = GetString(e[2]) ?? string.Empty,
             LastPositionTime = GetUnixTime(e[3]),
             LastContact = GetUnixTime(e[4]) ?? DateTimeOffset.UtcNow,
-            Longitude = GetDouble(e[5]),
-            Latitude = GetDouble(e[6]),
+            Position = coords,
             BaroAltitudeFeet = GetDouble(e[7]) is double baro ? baro * MetersToFeet : null,
             OnGround = GetBool(e[8]),
             VelocityKnots = GetDouble(e[9]) is double vel ? vel * MpsToKnots : null,

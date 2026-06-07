@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mapsui="clr-namespace:Mapsui.UI.Wpf;assembly=Mapsui.UI.Wpf"
         xmlns:local="clr-namespace:Sentinel"
         mc:Ignorable="d"
         Title="Sentinel " Height="600" Width="900"
@@ -12,9 +13,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="#1A2433" Padding="20,14">
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#1A2433" Padding="20,14">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -130,5 +135,8 @@
                 <DataGridTextColumn Header="Altitude" Width="*" Binding="{Binding AltitudeDisplay}" SortMemberPath="BaroAltitudeFeet" />
             </DataGrid.Columns>
         </DataGrid>
+
+        <!-- Mapsui Map -->
+        <mapsui:MapControl x:Name="MapControl" Grid.Row="1" Grid.Column="2" Margin="20" />
     </Grid>
 </Window>
